@@ -1,0 +1,1 @@
+# AudioEffectInspector_GodotAddon
