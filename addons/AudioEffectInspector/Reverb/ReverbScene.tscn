@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://addons/audio_effect_inspector/Reverb/ReverbEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/AudioEffectInspector/Reverb/ReverbEditor.gd" type="Script" id=1]
 
 [sub_resource type="Environment" id=1]
 

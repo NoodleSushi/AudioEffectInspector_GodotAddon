@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/audio_effect_inspector/Panner/graphic.png" type="Texture" id=1]
-[ext_resource path="res://addons/audio_effect_inspector/Panner/PannerEditor.gd" type="Script" id=2]
+[ext_resource path="res://addons/AudioEffectInspector/Panner/graphic.png" type="Texture" id=1]
+[ext_resource path="res://addons/AudioEffectInspector/Panner/PannerEditor.gd" type="Script" id=2]
 
 [node name="PannerScene" type="CenterContainer"]
 margin_right = 128.0
