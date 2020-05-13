@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/audio_effect_inspector/Delay/DelayEditor.gd" type="Script" id=1]
+
+[node name="DelayScene" type="CenterContainer"]
+margin_right = 256.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 256, 128 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_right = 256.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 256, 128 )
+color = Color( 0.152941, 0.14902, 0.168627, 1 )

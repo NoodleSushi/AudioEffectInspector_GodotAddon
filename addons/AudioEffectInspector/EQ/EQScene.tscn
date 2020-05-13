@@ -1,0 +1,131 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/audio_effect_inspector/EQ/EQEditor.gd" type="Script" id=1]
+
+[node name="EQScene" type="VBoxContainer"]
+anchor_right = 1.0
+margin_right = -878.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 128, 184 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EQEditor" type="HBoxContainer" parent="."]
+margin_right = 188.0
+margin_bottom = 132.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Leveller" type="Panel" parent="EQEditor"]
+margin_right = 16.0
+margin_bottom = 132.0
+rect_min_size = Vector2( 16, 0 )
+mouse_default_cursor_shape = 9
+size_flags_vertical = 3
+
+[node name="Space" type="Control" parent="EQEditor"]
+margin_left = 20.0
+margin_right = 172.0
+margin_bottom = 132.0
+mouse_default_cursor_shape = 3
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VScrollBar" type="VScrollBar" parent="EQEditor"]
+margin_left = 176.0
+margin_right = 188.0
+margin_bottom = 132.0
+min_value = -60.0
+max_value = 24.0
+step = 1.0
+page = 36.0
+value = -18.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DbScroll" type="HBoxContainer" parent="."]
+margin_top = 136.0
+margin_right = 188.0
+margin_bottom = 160.0
+size_flags_horizontal = 3
+
+[node name="Min" type="SpinBox" parent="DbScroll"]
+margin_right = 74.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+min_value = -60.0
+max_value = 24.0
+value = -18.0
+rounded = true
+suffix = "db"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="DbScroll"]
+margin_left = 78.0
+margin_right = 110.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 32, 0 )
+size_flags_vertical = 3
+text = "to"
+align = 1
+valign = 1
+
+[node name="Max" type="SpinBox" parent="DbScroll"]
+margin_left = 114.0
+margin_right = 188.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+min_value = -60.0
+max_value = 24.0
+value = 18.0
+rounded = true
+suffix = "db"
+
+[node name="DrawStateButtons" type="HBoxContainer" parent="."]
+show_behind_parent = true
+margin_top = 164.0
+margin_right = 188.0
+margin_bottom = 184.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Pencil" type="Button" parent="DrawStateButtons"]
+margin_right = 60.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+toggle_mode = true
+pressed = true
+text = "Pencil"
+
+[node name="Line" type="Button" parent="DrawStateButtons"]
+margin_left = 64.0
+margin_right = 124.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Line"
+
+[node name="Curve" type="Button" parent="DrawStateButtons"]
+margin_left = 128.0
+margin_right = 188.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Curve"
+[connection signal="gui_input" from="EQEditor/Leveller" to="." method="_on_Leveller_gui_input"]
+[connection signal="gui_input" from="EQEditor/Space" to="." method="_on_Space_gui_input"]
+[connection signal="value_changed" from="EQEditor/VScrollBar" to="." method="_on_VScrollBar_value_changed"]
+[connection signal="value_changed" from="DbScroll/Min" to="." method="_on_Min_value_changed"]
+[connection signal="value_changed" from="DbScroll/Max" to="." method="_on_Max_value_changed"]
+[connection signal="pressed" from="DrawStateButtons/Pencil" to="." method="change_mode" binds= [ 0 ]]
+[connection signal="pressed" from="DrawStateButtons/Line" to="." method="change_mode" binds= [ 1 ]]
+[connection signal="pressed" from="DrawStateButtons/Curve" to="." method="change_mode" binds= [ 2 ]]
