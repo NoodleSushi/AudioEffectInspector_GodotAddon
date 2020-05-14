@@ -18,7 +18,7 @@ var pressed_left: bool = false
 var pressed_right: bool = false
 var leveller_left_pressed: bool = false
 var scroll_is_scrolling: bool = false
-var line_points: Array = [Vector2(), Vector2()]
+var prev_click_pos: Vector2 = Vector2()
 var mode: int = MODE.PENCIL
 
 var object: AudioEffectEQ
@@ -42,56 +42,50 @@ func _ready() -> void:
 
 
 func _on_Space_gui_input(event: InputEvent) -> void:
+	#If the left mouse button pressed/released once
+	#Set (pressed_left: bool) state, and (prev_click_pos: Vector2) position
+	#Set band gain db on cursor
 	if event is InputEventMouseButton && event.button_index == BUTTON_LEFT:
 		pressed_left = event.pressed
-		line_points[0] = event.position
-		if mode == MODE.LINE:
-			var newx = stepify(line_points[0].x, space_node.rect_size.x/float(band_count)) + space_node.rect_size.x/float(band_count*2)
-			line_points[0].y = x_to_line_points_y(newx)
-			line_points[0].x = newx
-
+		prev_click_pos = event.position
+		object.set_band_gain_db(Space_x_to_band_index(prev_click_pos.x), Space_y_to_db(prev_click_pos.y))
+	
+	#If the right mouse button pressed/released once
+	#Set (pressed_right: bool) state
 	if event is InputEventMouseButton && event.button_index == BUTTON_RIGHT:
 		pressed_right = event.pressed
-
+		prev_click_pos = event.position
+	
 	if event is InputEventMouse && (pressed_left || pressed_right):
-		var band_index = Space_x_to_band_index(event.position.x)
-
-		if pressed_right:
-			object.set_band_gain_db(band_index, 0)
-			editor_plugin.refresh()
-			return
+		var click_pos = event.position
+		var band_index = Space_x_to_band_index(click_pos.x)
 		
-		if mode == MODE.PENCIL || mode == MODE.CURVE:
+		if [MODE.PENCIL, MODE.CURVE].has(mode) && pressed_left || pressed_right:
 			selected_band_idx = band_index
-			var new_db = Space_y_to_db(event.position.y)
+			var new_db: float = Space_y_to_db(event.position.y) if !pressed_right else 0
+			var old_idx: int = Space_x_to_band_index(prev_click_pos.x)
+			var new_idx: int = Space_x_to_band_index(event.position.x)
 			object.set_band_gain_db(band_index, new_db)
-			
-			var old_idx = Space_x_to_band_index(line_points[0].x)
-			var new_idx = Space_x_to_band_index(event.position.x)
 			if abs(old_idx - new_idx) > 0:
-				var old_db = object.get_band_gain_db(old_idx)
+				var old_db: float = object.get_band_gain_db(old_idx)
 				for band_idx in range(min(old_idx, new_idx) + 1, max(old_idx, new_idx)):
-					object.set_band_gain_db(band_idx, range_lerp(band_idx, old_idx, new_idx, old_db, new_db))
-			
-			line_points[0] = event.position
+					var band_db = 0
+					if !pressed_right:
+						band_db = range_lerp(band_idx, old_idx, new_idx, old_db, new_db)
+					object.set_band_gain_db(band_idx, band_db)
+			prev_click_pos = event.position
 			editor_plugin.refresh()
-
 		elif mode == MODE.LINE:
-			line_points[1] = event.position
-			var editor_space_size: Vector2 = space_node.rect_size
-			var m = (line_points[1].y - line_points[0].y) / (line_points[1].x - line_points[0].x)
-			# var p1 = Vector2(0, m * (0 - line_points[0].x) + line_points[0].y)
-			# var p2 = Vector2(editor_space_size.x, m * (editor_space_size.x - line_points[0].x) + line_points[0].y)
-
-			for band_idx in range(band_count):
-				var idx = [Space_x_to_band_index(line_points[0].x), Space_x_to_band_index(line_points[1].x)]
-				if band_idx >= min(idx[0], idx[1]) && band_idx <= max(idx[0], idx[1]):
+			var band_idx_a: int= Space_x_to_band_index(prev_click_pos.x)
+			var band_idx_b: int = Space_x_to_band_index(click_pos.x)
+			var db_a: float = Space_y_to_db(prev_click_pos.y)
+			var db_b: float = Space_y_to_db(click_pos.y)
+			if band_idx_a - band_idx_b != 0:
+				for band_idx in range(min(band_idx_a, band_idx_b), max(band_idx_a, band_idx_b) + 1):
 					object.set_band_gain_db(
-						band_idx, 
-						Space_y_to_db(x_to_line_points_y(band_index_to_Space_x(band_idx, 0.5)))
-						#db_from_y(m * (x_from_band_index(band_idx, 0.5) - line_points[0].x) + line_points[0].y)
+						band_idx,
+						range_lerp(band_idx, band_idx_a, band_idx_b, db_a, db_b)
 					)
-
 			editor_plugin.refresh()
 
 
@@ -104,14 +98,13 @@ func _on_Leveller_gui_input(event: InputEvent) -> void:
 		var db_move_translation: float = -event.relative.y*db_move_scale
 		for band_idx in range(band_count):
 			object.set_band_gain_db(band_idx, clamp(object.get_band_gain_db(band_idx)+db_move_translation, DB_MIN, DB_MAX))
-		editor_plugin.refresh()
+		editor_plugin.refresh()	
 
 
 func _process(delta: float) -> void:
 	if pressed_left && !pressed_right && mode == MODE.CURVE:
 		for search_range in range(1, int(band_count)):
 			var upper_bound = selected_band_idx + search_range
-			#var weight = clamp(250*delta / (search_range*50), 0, 1)
 			var weight = pow(2, -search_range) * delta * 10
 			if upper_bound < band_count:
 				var new_db = lerp(object.get_band_gain_db(upper_bound), object.get_band_gain_db(upper_bound-1), weight)
@@ -129,15 +122,7 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	draw_set_transform(space_node.rect_position, 0, Vector2.ONE)
 	var editor_space_size: Vector2 = space_node.rect_size
-
-	#DRAW LINE TEST
-#	if line_points[1].x != line_points[0].x:
-#		var m = (line_points[1].y - line_points[0].y) / (line_points[1].x - line_points[0].x)
-#		var p1 = Vector2(0, m * (0 - line_points[0].x) + line_points[0].y)
-#		var p2 = Vector2(editor_space_size.x, m * (editor_space_size.x - line_points[0].x) + line_points[0].y)
-#		draw_line(p1, p2, Color.red)
-#		draw_circle(line_points[0], 2, Color.red)
-
+	
 	#DRAW LINE GUIDES
 	for line_db in range(-60, 24, 6):
 		if line_db < min_node.value || line_db > max_node.value:
@@ -179,10 +164,6 @@ func Space_x_to_band_index(x: float) -> int:
 	return int(clamp(floor(x*band_count/space_node.rect_size.x), 0, band_count-1))
 
 
-func band_index_to_Space_x(band_idx: int, phase: float = 0) -> float:
-	return ((band_idx + phase) * space_node.rect_size.x) / float(band_count)
-
-
 func Space_y_to_db(y: float) -> float:
 	return range_lerp(
 		clamp(y, 0, space_node.rect_size.y), 
@@ -193,14 +174,8 @@ func Space_y_to_db(y: float) -> float:
 	)
 
 
-func line_points_get_m() -> float:
-	if (line_points[1].x - line_points[0].x) != 0:
-		return (line_points[1].y - line_points[0].y) / (line_points[1].x - line_points[0].x)
-	return 0.0
-
-
-func x_to_line_points_y(x_pos: float) -> float:
-	return line_points_get_m() * (x_pos - line_points[0].x) + line_points[0].y
+func band_index_to_Space_x(band_idx: int, phase: float = 0) -> float:
+	return ((band_idx + phase) * space_node.rect_size.x) / float(band_count)
 
 
 #TODO: FIX SCROLL BAR INVERSE
