@@ -2,3 +2,4 @@ project.godot
 .import/
 Test Workbench/
 default_bus_layout.tres
+*.import
