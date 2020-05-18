@@ -1,37 +1,44 @@
 extends EditorInspectorPlugin
 var editor_plugin: EditorPlugin
 
+const references = {
+	AudioEffectPanner: ["AudioEffectPanner", preload("Panner/PannerScene.tscn")],
+	AudioEffectReverb: ["AudioEffectReverb", preload("Reverb/ReverbScene.tscn")],
+	AudioEffectEQ: ["AudioEffectEQ", preload("EQ/EQScene.tscn")],
+	AudioEffectDelay: ["AudioEffectDelay", preload("Delay/DelayScene.tscn")],
+}
+
+const preset_browser_ref = preload("res://addons/AudioEffectInspector/Presets/PresetBrowser.tscn")
+
+var preset_data = {}
+
+func _init() -> void:
+	var file = File.new()
+	file.open("res://addons/AudioEffectInspector/Presets/presets.cdb", File.READ)
+	preset_data = JSON.parse(file.get_as_text()).result
+	file.close()
+
 func can_handle(object: Object) -> bool:
 	return object is AudioEffect
 
-func parse_property(object: Object, type: int, path: String, hint: int, hint_text: String, usage: int) -> bool:
-#	printt(type, path, hint, hint_text, usage)
-	if object is AudioEffectPanner && path == "pan":
-		var editor = preload("Panner/PannerScene.tscn").instance()
-		editor.object = object
-		editor.editor_plugin = editor_plugin
-		add_custom_control(editor)
+func parse_category(object: Object, category: String) -> void:
+	for _class in references.keys():
+		if !(object is _class && category == references[_class][0]):
+			continue
 		
-	elif object is AudioEffectReverb && path == "room_size":
-		var editor = preload("Reverb/ReverbScene.tscn").instance()
+		var editor = references[_class][1].instance()
 		editor.object = object
 		editor.editor_plugin = editor_plugin
-		add_custom_control(editor)
 		
-	elif object is AudioEffectEQ && (\
-		(path == "band_db/32_hz" && object.get_band_count() == 6) || \
-		(path == "band_db/31_hz" && object.get_band_count() == 10) || \
-		(path == "band_db/22_hz" && object.get_band_count() == 21)):
-		var editor = preload("EQ/EQScene.tscn").instance()
-		editor.object = object
-		editor.editor_plugin = editor_plugin
-		editor.band_count = object.get_band_count()
-		add_custom_control(editor)
+		if object is AudioEffectEQ:
+			editor.band_count = object.get_band_count()
 		
-	elif object is AudioEffectDelay && path == "dry":
-		var editor = preload("Delay/DelayScene.tscn").instance()
-		editor.object = object
-		editor.editor_plugin = editor_plugin
+		for _sheet in preset_data.sheets:
+			if _sheet.name == references[_class][0]:
+				var new_browser = preset_browser_ref.instance()
+				new_browser.preset_list = _sheet.lines
+				editor.add_child(new_browser)
+				editor.move_child(new_browser, 0)
+				break
+		
 		add_custom_control(editor)
-	
-	return false
