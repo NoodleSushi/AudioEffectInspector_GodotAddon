@@ -1,30 +1,38 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [sub_resource type="Environment" id=1]
 
+[sub_resource type="SpatialMaterial" id=2]
+roughness = 0.458986
+emission_enabled = true
+emission = Color( 1, 1, 1, 1 )
+emission_energy = 0.0
+emission_operator = 0
+emission_on_uv2 = false
+
 [sub_resource type="CylinderMesh" id=3]
+material = SubResource( 2 )
 flip_faces = true
-radial_segments = 8
+radial_segments = 4
 
-[sub_resource type="SpatialMaterial" id=9]
-roughness = 0.210041
+[sub_resource type="SpatialMaterial" id=4]
+roughness = 0.21
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=5]
 size = Vector3( 2, 3, 2 )
 
-[sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0.427451, 0.423529, 0.454902, 1 )
-
 [sub_resource type="SpatialMaterial" id=6]
+
+[sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 0.760784, 0.760784, 0.760784, 1 )
 
-[sub_resource type="CylinderMesh" id=7]
-material = SubResource( 6 )
+[sub_resource type="CylinderMesh" id=8]
+material = SubResource( 7 )
 top_radius = 0.8
 bottom_radius = 0.8
 height = 2.2
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=9]
 albedo_color = Color( 0.901961, 0.909804, 0.913725, 1 )
 
 [node name="Spatial" type="Spatial"]
@@ -46,7 +54,7 @@ __meta__ = {
 transform = Transform( 1.28128, 0, 1.28128, 0, 0.703, 0, -1.28128, 0, 1.28128, 0, 0, 0 )
 layers = 524288
 mesh = SubResource( 3 )
-material/0 = SubResource( 9 )
+material/0 = SubResource( 4 )
 
 [node name="OmniLight5" type="OmniLight" parent="Room"]
 transform = Transform( -0.313024, 0, -0.114574, 0, 1, 0, 0.114574, 0, -0.313024, 0.375, 0, 0.375 )
@@ -134,23 +142,23 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.703, 0 )
 [node name="MeshInstance" type="MeshInstance" parent="Floor"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.3, 0 )
 layers = 524288
-mesh = SubResource( 4 )
-material/0 = SubResource( 5 )
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Floor/MeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 layers = 524288
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+mesh = SubResource( 8 )
+material/0 = SubResource( 9 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Floor/MeshInstance"]
 transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.5, 0 )
 layers = 524288
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+mesh = SubResource( 8 )
+material/0 = SubResource( 9 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Floor/MeshInstance"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.5, 0 )
 layers = 524288
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+mesh = SubResource( 8 )
+material/0 = SubResource( 9 )
