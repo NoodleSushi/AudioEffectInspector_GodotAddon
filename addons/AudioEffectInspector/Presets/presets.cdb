@@ -1,0 +1,93 @@
+{
+	"sheets": [
+		{
+			"name": "AudioEffectReverb",
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "name"
+				},
+				{
+					"typeStr": "4",
+					"name": "room_size",
+					"display": 1,
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "damping",
+					"opt": true,
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "spread",
+					"opt": true,
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "hipass",
+					"opt": true,
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "dry",
+					"opt": true,
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "wet",
+					"display": 1,
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "predelay_msec",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "predelay_feedback",
+					"opt": true,
+					"display": 1
+				}
+			],
+			"lines": [
+				{
+					"name": "Default",
+					"room_size": 0.8,
+					"damping": 0.5,
+					"spread": 1,
+					"hipass": 0,
+					"dry": 1,
+					"wet": 0.5,
+					"predelay_msec": 150,
+					"predelay_feedback": 0.4
+				},
+				{
+					"name": "Drum Room",
+					"room_size": 0.35,
+					"damping": 0.2,
+					"hipass": 0.8,
+					"wet": 0.6,
+					"predelay_feedback": 0.1
+				},
+				{
+					"name": "The Venue",
+					"damping": 0.4,
+					"spread": 0.65,
+					"hipass": 0.6,
+					"wet": 0.7,
+					"predelay_feedback": 0.5
+				}
+			],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}
