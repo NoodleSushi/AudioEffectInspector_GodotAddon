@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 	if !change:
 		return
 	room_node.get_surface_material(0).roughness = lerp(0.625, 0.21, damping)
-	var segments = round(lerp(4, 8, spread))
+	var segments = round(lerp(4, 16, spread))
 	room_node.mesh.radial_segments = segments
 	room_node.rotation.y = PI/float(segments)
 	#room_node.rotate_y(delta*0.8)
