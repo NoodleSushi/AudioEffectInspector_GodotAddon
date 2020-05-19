@@ -15,22 +15,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
-visible = false
-margin_right = 75.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Placeholder"
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Browser" type="OptionButton" parent="."]
-margin_left = 38.0
+margin_left = 65.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_vertical = 3
+
+[node name="Left" type="Button" parent="."]
+margin_left = 98.0
+margin_right = 118.0
+margin_bottom = 20.0
+text = "<"
+
+[node name="Right" type="Button" parent="."]
+margin_left = 122.0
 margin_right = 142.0
 margin_bottom = 20.0
-size_flags_vertical = 3
-text = "Placeholder"
+text = ">"
 [connection signal="item_selected" from="Browser" to="." method="_on_Browser_item_selected"]
+[connection signal="pressed" from="Left" to="." method="_on_NavigationButton_pressed" binds= [ -1 ]]
+[connection signal="pressed" from="Right" to="." method="_on_NavigationButton_pressed" binds= [ 1 ]]
