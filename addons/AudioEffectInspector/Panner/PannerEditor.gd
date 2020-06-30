@@ -1,6 +1,6 @@
 tool extends CenterContainer
 
-var object = null
+var object : AudioEffectPanner
 var editor_plugin: EditorPlugin
 var is_pressed = false
 func _process(delta: float) -> void:

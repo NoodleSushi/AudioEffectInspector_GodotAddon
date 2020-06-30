@@ -1,6 +1,6 @@
 extends CenterContainer
 tool
-var object: AudioEffectDelay
+var object : AudioEffectDelay
 var editor_plugin: EditorPlugin
 var color: = Color("f9b338")
 var color2: = Color("397ff7")

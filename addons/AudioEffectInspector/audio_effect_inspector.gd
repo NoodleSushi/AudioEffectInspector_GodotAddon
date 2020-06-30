@@ -6,6 +6,7 @@ const references = {
 	AudioEffectReverb: ["AudioEffectReverb", preload("Reverb/ReverbScene.tscn")],
 	AudioEffectEQ: ["AudioEffectEQ", preload("EQ/EQScene.tscn")],
 	AudioEffectDelay: ["AudioEffectDelay", preload("Delay/DelayScene.tscn")],
+	AudioEffectDistortion: ["AudioEffectDistortion", preload("Distortion/DistortionScene.tscn")]
 }
 
 const preset_browser_ref = preload("res://addons/AudioEffectInspector/Presets/PresetBrowser.tscn")

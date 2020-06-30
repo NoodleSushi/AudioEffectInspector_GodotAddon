@@ -98,7 +98,7 @@ func _on_Leveller_gui_input(event: InputEvent) -> void:
 		var db_move_translation: float = -event.relative.y*db_move_scale
 		for band_idx in range(band_count):
 			object.set_band_gain_db(band_idx, clamp(object.get_band_gain_db(band_idx)+db_move_translation, DB_MIN, DB_MAX))
-		editor_plugin.refresh()	
+		editor_plugin.refresh()
 
 
 func _process(delta: float) -> void:

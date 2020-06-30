@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/AudioEffectInspector/Distortion/DistortionEditor.gd" type="Script" id=1]
+
+[node name="DistortionScene" type="CenterContainer"]
+margin_right = 128.0
+margin_bottom = 128.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 128.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 128, 128 )
+color = Color( 0.152941, 0.14902, 0.168627, 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Line2D" type="Line2D" parent="ColorRect"]
+position = Vector2( 0, 128 )
+width = 1.0
+[connection signal="gui_input" from="ColorRect" to="." method="_on_ColorRect_gui_input"]
