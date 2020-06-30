@@ -5,6 +5,12 @@ Audio Effects could be confusing to users who may be unfamiliar with the Audio E
 
 [![Kofi Logo](https://az743702.vo.msecnd.net/cdn/kofi1.png?v=0)](https://ko-fi.com/noodlesushidev)
 
+## Watch The Video Here!
+[![Watch the video](https://i.ytimg.com/vi/WZzeIv7TayI/hqdefault.jpg)](https://youtu.be/WZzeIv7TayI)
+
+## AudioEffectDistortion (New in v1.3.0)
+![AudioEffectEQ](README%20Content/AudioEffectDistortion.gif)
+
 ## AudioEffectEQ
 ![AudioEffectEQ](README%20Content/AudioEffectEQ.gif)
 
